@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 import javax.sound.sampled.Port;
+import javax.swing.Spring;
 
 public class Main {
 
   public static void main(String[] args) {
-
+    ArrayList<Producto> catalogo = generarCatalogo();
   mensajeBienvenida();
-  menu();
+  menu(catalogo);
 
   }
   //// //////////////// MENSAJE AL INICIO DE PANTALLA /// ////////////////
@@ -30,8 +31,7 @@ Tenemos una amplia variedad de juegos a la venta dirigido a ese público colecci
   }
 
   /// //////////////// MENÚ DE OPCIONES PARA EL USUARIO /// ////////////////
-  public static void menu(){
-    ArrayList<Producto> catalogo = generarCatalogo();
+  public static void menu(ArrayList<Producto> catalogo){
     Scanner entrada = new Scanner(System.in);
     boolean bandera = true;
 
@@ -78,7 +78,7 @@ Tenemos una amplia variedad de juegos a la venta dirigido a ese público colecci
           break;
         default:
           System.out.println("Opción inválida.\n");
-          menu();
+          menu(catalogo);
           break;
 
       };
@@ -105,7 +105,7 @@ Tenemos una amplia variedad de juegos a la venta dirigido a ese público colecci
         actualizarCatalogo(catalogo);
         break;
       case 3:
-        menu();
+        menu(catalogo);
         break;
       default:
         System.out.println("Opción inválida.");
@@ -205,7 +205,29 @@ ArrayList<Producto> coincidencias = new ArrayList<>();
 
   } //Read
 
-  public static void actualizarCatalogo(ArrayList<Producto> catalogo){} //Update
+  public static void actualizarCatalogo(ArrayList<Producto> catalogo){
+  int idBusqueda;
+  Scanner entrada = new Scanner(System.in);
+
+    System.out.println("""
+        =============================================
+                   ACTUALIZACIÓN DE DATOS
+        =============================================""");
+
+    System.out.println("Para actualizar un producto debe buscarlo por su nro de ID.");
+    System.out.println("Por favor, ingrese el ID: ");
+    idBusqueda = entrada.nextInt();
+
+      for (Producto juego : catalogo) {
+
+        if(idBusqueda == juego.mostrarID()){
+          System.out.println("Se ha encontrado el producto -> |ID:" + juego.mostrarID() + "| |Nombre: " +juego.mostrarNombre() + "| |Precio: " + juego.mostrarPrecio() + "$| |Stock:" + juego.mostrarStock() +"|");
+          menuActualizacionCatalogo(juego);
+
+        }
+      }
+    menu(catalogo);
+  } //Update
 
   public static void eliminarJuegoCatalogo(ArrayList<Producto> catalogo){} //Delete
 
@@ -221,6 +243,81 @@ ArrayList<Producto> coincidencias = new ArrayList<>();
   public static void pausa() {
     Scanner entrada = new Scanner(System.in);
     entrada.nextLine();
+  }
+
+  public static void menuActualizacionCatalogo(Producto juego){
+    int opcion;
+
+    boolean resultado;
+    Scanner entrada = new Scanner(System.in);
+
+    System.out.println("""
+              ¿Qué dato desea actualizar?
+              
+              1 - Nombre.
+              2 - Precio.
+              3 - Stock.
+              4 - Todos los datos del producto.
+              
+              Ingrese su opción: """);
+    opcion = entrada.nextInt();
+
+    switch (opcion) {
+      case 1:
+        cambiarNombreProducto(juego);
+        break;
+      case 2:
+        cambiarPrecioProducto(juego);
+        break;
+      case 3:
+        cambiarStockProducto(juego);
+        break;
+      case 4:
+        cambiarNombreProducto(juego);
+        cambiarPrecioProducto(juego);
+        cambiarStockProducto(juego);
+        break;
+      default:
+        System.out.println("La opción ingresada es inválida...");
+        menuActualizacionCatalogo(juego);
+        break;
+    }
+  }
+
+  public static void cambiarNombreProducto(Producto juego){
+    String nuevoNombre;
+    Scanner entrada = new Scanner(System.in);
+
+    System.out.println("Ingrese el nuevo nombre: ");
+    nuevoNombre = entrada.nextLine();
+
+    juego.modificarNombre(nuevoNombre);
+    System.out.println("El nombre ha sido modificado: " + juego.mostrarNombre());
+    pausa();
+
+  }
+
+  public static void cambiarPrecioProducto(Producto juego){
+    double nuevoPrecio;
+    Scanner entrada = new Scanner(System.in);
+
+    System.out.println("Ingrese el nuevo precio: ");
+    nuevoPrecio = entrada.nextDouble();
+
+    juego.modificarPrecio(nuevoPrecio);
+    System.out.println("El precio ha sido modificado: " + juego.mostrarPrecio());
+    pausa();
+  }
+
+  public static void cambiarStockProducto(Producto juego){
+    int nuevoStock;
+    Scanner entrada = new Scanner(System.in);
+    System.out.println("Ingrese el nuevo stock: ");
+    nuevoStock = entrada.nextInt();
+
+    juego.modificarStock(nuevoStock);
+    System.out.println("El Stock ha sido modificado: " + juego.mostrarStock());
+    pausa();
   }
 
   public static String formatearNombres(String nombre){
