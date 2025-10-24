@@ -166,7 +166,7 @@ Tenemos una amplia variedad de juegos a la venta dirigido a ese público colecci
         =============================================""");
 
     for (Producto juego : catalogo){
-      System.out.println("ID: " + juego.mostrarID() + " - " + juego.mostrarNombre());
+      System.out.println("ID: " + juego.mostrarID() + " - " + juego.mostrarNombre() + "| Precio: " + juego.mostrarPrecio() + "| Stock: " + juego.mostrarStock());
     }
 
     System.out.print("\nPulse ENTER para continuar...");
@@ -229,7 +229,35 @@ ArrayList<Producto> coincidencias = new ArrayList<>();
     menu(catalogo);
   } //Update
 
-  public static void eliminarJuegoCatalogo(ArrayList<Producto> catalogo){} //Delete
+  public static void eliminarJuegoCatalogo(ArrayList<Producto> catalogo){
+  Scanner entrada = new Scanner(System.in);
+  int idBusqueda;
+
+    System.out.println("""
+        =============================================
+                   ELIMINACIÓN DE PRODUCTO
+        =============================================""");
+
+    System.out.println("Para eliminar un producto, es necesario el ID del mismo.");
+    System.out.println("Ingrese ID: ");
+    idBusqueda = entrada.nextInt();
+
+    for(Producto juego : catalogo){
+
+      if (idBusqueda == juego.mostrarID()){
+        catalogo.remove(juego);
+
+        System.out.println("El producto ha sido eliminado.");
+        System.out.print("\nPulse ENTER para continuar...");
+        pausa();
+      menu(catalogo);
+      }
+
+    }
+
+
+
+  } //Delete
 
 
   /// //////////////// FUNCIONES PEDIDOS /// ////////////////
@@ -238,7 +266,7 @@ ArrayList<Producto> coincidencias = new ArrayList<>();
   public static void mostrarPedidos(){}
 
 
-  /// //////////////// FUNCIONES AUXILIARES/// ////////////////
+  /// //////////////// FUNCIONES SECUNDARIAS/// ////////////////
 
   public static void pausa() {
     Scanner entrada = new Scanner(System.in);
